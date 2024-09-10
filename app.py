@@ -7,11 +7,11 @@ app = Flask(__name__)
 CORS(app)  # Enable CORS
 
 # OpenAI API key
-openai.api_key = 'sk-proj-FFifgCnpo7S2td9yw1cNT3BlbkFJ1lmyM3HV3JIYRoEp76eM'
+openai.api_key = 'sk-proj-l5v3KsyHRQGfbQKeoAlUT3BlbkFJmz2QlkyzRWX7o9cPscjK'
 
 def generate_prompt(investment_amount, risk_tolerance):
     return (f"Generate a diversified portfolio for an investment of {investment_amount} EUR with a {risk_tolerance} risk tolerance. "
-            "Include asset classes such as stocks, bonds, and real estate. For each asset class, provide the asset class name, percentage allocation, ticker.")
+            "Include asset classes such as stocks, bonds, and real estate. For each asset class, provide the asset class name, percentage allocation, amount to invest, ticker.")
 
 @app.route('/generate_portfolio', methods=['POST'])
 def generate_portfolio():
