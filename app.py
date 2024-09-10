@@ -7,7 +7,7 @@ app = Flask(__name__)
 CORS(app)  # Enable CORS
 
 # OpenAI API key
-openai.api_key = 'sk-proj-l5v3KsyHRQGfbQKeoAlUT3BlbkFJmz2QlkyzRWX7o9cPscjK'
+openai.api_key = 'API_KEY'
 
 def generate_prompt(investment_amount, risk_tolerance):
     return (f"Generate a diversified portfolio for an investment of {investment_amount} EUR with a {risk_tolerance} risk tolerance. "
