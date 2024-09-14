@@ -19,5 +19,5 @@
         "dest": "/client/build/$1"
       }
     ]
-  }
+  } 
   
