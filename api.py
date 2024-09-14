@@ -1,6 +1,6 @@
 import openai
 
-openai.api_key = 'sk-proj-FFifgCnpo7S2td9yw1cNT3BlbkFJ1lmyM3HV3JIYRoEp76eM'
+openai.api_key = 'OPENAI_API_KEY'
 
 response = openai.Completion.create(
     model="gpt-3.5-turbo",
