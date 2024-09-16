@@ -2,13 +2,18 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import openai
 import logging
-import os  # Import os module to access environment variables
+import os
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS
 
 # Retrieve OpenAI API key from environment variable
 openai.api_key = os.getenv('OPENAI_API_KEY')
+
+# Basic Route Test
+@app.route('/')
+def index():
+    return 'App is running!'
 
 def generate_prompt(investment_amount, risk_tolerance):
     return (f"Generate a diversified portfolio for an investment of {investment_amount} EUR with a {risk_tolerance} risk tolerance. "
@@ -45,4 +50,3 @@ def generate_portfolio():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)), debug=True)
-
