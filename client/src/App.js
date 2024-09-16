@@ -8,17 +8,21 @@ function App() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  // Use your Heroku app URL here
+  const API_URL = 'https://portfolioai-da34d7ab7951.herokuapp.com';
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
     setLoading(true);
+
     try {
-      const response = await fetch('/generate_portfolio', {
+      const response = await fetch(`${API_URL}/generate_portfolio`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ amount, risk_tolerance: riskTolerance })
+        body: JSON.stringify({ amount, risk_tolerance: riskTolerance }),
       });
 
       if (!response.ok) {
