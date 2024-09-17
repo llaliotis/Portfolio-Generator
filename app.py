@@ -1,11 +1,20 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 import openai
 import logging
 import os
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS
+
+# Rate Limiting
+limiter = Limiter(
+    get_remote_address,  # Limit by IP address
+    app=app,
+    default_limits=["5 per minute"]  # Example: 5 requests per minute
+)
 
 # Retrieve OpenAI API key from environment variable
 openai.api_key = os.getenv('OPENAI_API_KEY')
@@ -19,7 +28,9 @@ def generate_prompt(investment_amount, risk_tolerance):
     return (f"Generate a diversified portfolio for an investment of {investment_amount} EUR with a {risk_tolerance} risk tolerance. "
             "Include asset classes such as stocks, bonds, and real estate. For each asset class, provide the asset class name, percentage allocation, amount to invest, ticker.")
 
+# Apply rate limiting to the portfolio generation endpoint
 @app.route('/generate_portfolio', methods=['POST'])
+@limiter.limit("3 per minute")  # Example: Limit to 3 requests per minute for this route
 def generate_portfolio():
     try:
         user_data = request.json
