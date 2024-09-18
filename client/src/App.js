@@ -9,7 +9,7 @@ function App() {
   const [loading, setLoading] = useState(false);
 
   // Use your Heroku app URL here
-  const API_URL = 'https://portfolioai-da34d7ab7951.herokuapp.com/';
+  const API_URL = 'https://portfolioai-da34d7ab7951.herokuapp.com';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
