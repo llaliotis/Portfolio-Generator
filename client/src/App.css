@@ -1,70 +1,132 @@
-.app-container {
-  font-family: Arial, sans-serif;
-  padding: 20px;
-  max-width: 600px;
-  margin: 0 auto;
+/* Reset some default styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Align items from the top */
+  padding: 50px 0; /* Add space at both top and bottom */
+}
+
+.app-container {
+  background: white;
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500px;
+  margin-top: 20px;  /* Space at the top of the container */
+  margin-bottom: 50px; /* Space at the bottom of the container */
+}
+
+
 
 h1 {
   text-align: center;
+  margin-bottom: 30px;
   color: #333;
 }
 
-.portfolio-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+.portfolio-form .form-group {
+  margin-bottom: 20px;
 }
 
-.form-group {
-  display: flex;
-  flex-direction: column;
+.portfolio-form label {
+  display: block;
+  margin-bottom: 8px;
+  color: #555;
+  font-weight: 500;
 }
 
-label {
-  font-weight: bold;
-}
-
-input[type="number"], select {
-  padding: 10px;
+.portfolio-form input,
+.portfolio-form select {
+  width: 100%;
+  padding: 12px 20px;
   border: 1px solid #ddd;
-  border-radius: 4px;
-}
-
-button {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  background-color: #007bff;
-  color: white;
+  border-radius: 10px;
+  transition: border 0.3s ease;
   font-size: 16px;
+}
+
+.portfolio-form input:focus,
+.portfolio-form select:focus {
+  border-color: #6a11cb;
+  outline: none;
+}
+
+.portfolio-form button {
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  border: none;
+  border-radius: 25px;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background 0.3s ease, transform 0.2s ease;
 }
 
-button:hover {
-  background-color: #0056b3;
-}
-
-button:disabled {
-  background-color: #cccccc;
+.portfolio-form button:disabled {
+  background: #a0a0a0;
   cursor: not-allowed;
 }
 
+.portfolio-form button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #2575fc, #6a11cb);
+  transform: translateY(-2px);
+}
+
 .error-message {
-  color: red;
-  font-weight: bold;
-  text-align: center;
+  margin-top: 20px;
+  padding: 15px;
+  background: #ffe6e6;
+  color: #cc0000;
+  border-left: 5px solid #ff4d4d;
+  border-radius: 5px;
 }
 
 .portfolio-container {
-  margin-top: 20px;
+  margin-top: 30px;
+  padding: 20px;
+  background: #f0f4ff;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.portfolio-container h2 {
+  margin-bottom: 15px;
+  color: #333;
 }
 
 .portfolio-text {
-  white-space: pre-wrap; /* Preserve whitespace and line breaks */
-  background-color: #f9f9f9;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  background: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  font-family: 'Courier New', Courier, monospace;
+  color: #444;
+  max-height: 300px;
+  white-space: pre-wrap; /* This allows text to wrap within the container */
+  word-wrap: break-word; /* Break long words to avoid overflow */
+  overflow-x: auto; /* Still keeps x-scroll if absolutely needed, but highly unlikely */
+}
+
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .app-container {
+    padding: 20px;
+  }
+
+  .portfolio-form button {
+    font-size: 16px;
+    padding: 12px;
+  }
 }
