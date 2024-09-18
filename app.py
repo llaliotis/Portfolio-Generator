@@ -24,23 +24,34 @@ openai.api_key = os.getenv('OPENAI_API_KEY')
 def index():
     return 'App is running!'
 
-def generate_prompt(investment_amount, risk_tolerance):
-    return (f"Generate a diversified portfolio for an investment of {investment_amount} EUR with a {risk_tolerance} risk tolerance. "
-            "Include asset classes such as stocks, bonds, and real estate. For each asset class, provide the asset class name, percentage allocation, amount to invest, ticker.")
+def generate_prompt(investment_amount, risk_tolerance, investment_duration, investment_goal, preferred_asset_classes):
+    asset_classes_text = ', '.join(preferred_asset_classes) if preferred_asset_classes else "stocks, bonds, real estate"
+    return (f"Generate a diversified portfolio for an investment of {investment_amount} EUR with a {risk_tolerance} risk tolerance, "
+            f"over a {investment_duration} duration and with a goal of {investment_goal}. "
+            f"Include asset classes such as {asset_classes_text}. For each asset class, provide the asset class name, percentage allocation, amount to invest, and ticker symbols if applicable.")
+
 
 # Apply rate limiting to the portfolio generation endpoint
 @app.route('/generate_portfolio', methods=['POST'])
-@limiter.limit("3 per minute")  # Example: Limit to 3 requests per minute for this route
+@limiter.limit("3 per minute")
 def generate_portfolio():
     try:
         user_data = request.json
         logging.info("Received user data: %s", user_data)
         
+        # Extract existing fields
         investment_amount = user_data['amount']
         risk_tolerance = user_data['risk_tolerance']
         
-        prompt = generate_prompt(investment_amount, risk_tolerance)
+        # Extract new fields with default values if they are missing
+        investment_duration = user_data.get('investment_duration', 'long-term')
+        investment_goal = user_data.get('investment_goal', 'growth')
+        preferred_asset_classes = user_data.get('preferred_asset_classes', [])  # Defaults to an empty list if not provided
         
+        # Pass all required fields to generate_prompt
+        prompt = generate_prompt(investment_amount, risk_tolerance, investment_duration, investment_goal, preferred_asset_classes)
+        
+        # Call OpenAI API
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=[
@@ -53,11 +64,11 @@ def generate_portfolio():
         portfolio = response.choices[0].message['content'].strip()
         logging.info("Generated portfolio: %s", portfolio)
         
-        # Ensure response is plain text
         return jsonify({'portfolio': portfolio})
     except Exception as e:
         logging.error("Error: %s", e)
         return jsonify({'error': str(e)}), 500
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)), debug=True)
