@@ -26,8 +26,12 @@ function App() {
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Unknown error');
+        if (response.status === 429) {
+          throw new Error('Too many requests. Please try again later.');
+        } else {
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'Unknown error');
+        }
       }
 
       const data = await response.json();
