@@ -13,6 +13,7 @@ function App() {
 
   // Use your Heroku app URL here
   const API_URL = 'https://portfolioai-da34d7ab7951.herokuapp.com';
+  //const API_URL = 'http://localhost:3000';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -97,8 +98,10 @@ function App() {
             onChange={(e) => setInvestmentDuration(e.target.value)}
             required
           >
-            <option value="short-term">Short-term</option>
-            <option value="long-term">Long-term</option>
+            <option value="less than a year">Less than 1 year</option>
+            <option value="1-3 year duration">1-3 years</option>
+            <option value="3-10 year duration">3-10 years</option>
+            <option value="10+ year duration">10+ years</option>
           </select>
         </div>
         <div className="form-group">
@@ -109,9 +112,12 @@ function App() {
             onChange={(e) => setInvestmentGoal(e.target.value)}
             required
           >
-            <option value="growth">Growth</option>
+            <option value="retirement">Retirement</option>
+            <option value="growth">Wealth growth over time</option>
+            <option value="short term gains">Short-term gains</option>
             <option value="income">Income</option>
             <option value="capital-preservation">Capital Preservation</option>
+            <option value="big purchase">A big purchase (e.g., house, car)</option>
           </select>
         </div>
 
