@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css'; // Import a CSS file for styling
 import Login from './components/Login'; // Adjust the path based on your structure
+import { parseCookies } from 'nookies'; // Import nookies for cookie parsing
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -13,7 +14,8 @@ function App() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const API_URL = 'https://portfolioai-da34d7ab7951.herokuapp.com';
+  //const API_URL = 'https://portfolioai-da34d7ab7951.herokuapp.com';
+  const API_URL = 'http://localhost:3000';
 
   const handleLogin = (status) => {
     setIsLoggedIn(status);
@@ -62,6 +64,15 @@ function App() {
     const selectedOptions = Array.from(e.target.selectedOptions, option => option.value);
     setPreferredAssetClasses(selectedOptions);
   };
+
+  useEffect(() => {
+    const cookies = parseCookies();
+    const authToken = cookies.authToken;
+
+    if (authToken) {
+      setIsLoggedIn(true); // User is logged in if authToken exists
+    }
+  }, []);
 
   return (
     <div className="app-container">
