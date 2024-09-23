@@ -14,8 +14,8 @@ function App() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  //const API_URL = 'https://portfolioai-da34d7ab7951.herokuapp.com';
-  const API_URL = 'http://localhost:3000';
+  const API_URL = 'https://portfolioai-da34d7ab7951.herokuapp.com';
+  //const API_URL = 'http://localhost:3000';
 
   const handleLogin = (status) => {
     setIsLoggedIn(status);
