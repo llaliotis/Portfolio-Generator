@@ -39,6 +39,7 @@ function App() {
           investment_goal: investmentGoal,
           preferred_asset_classes: preferredAssetClasses,
         }),
+        credentials: 'include',  // Ensure cookies (like auth tokens) are sent
       });
 
       if (!response.ok) {

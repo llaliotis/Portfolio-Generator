@@ -8,8 +8,14 @@ import os
 
 app = Flask(__name__)
 
-# CORS configuration
-CORS(app, supports_credentials=True, origins=['https://www.portfoliogpt.xyz', 'https://app.portfoliogpt.xyz'])
+
+
+# Allow credentials and specify exact origins
+CORS(app, supports_credentials=True, resources={
+    r"/*": {
+        "origins": ["https://app.portfoliogpt.xyz", "https://www.portfoliogpt.xyz"]
+    }
+})
 
 # Rate Limiting
 limiter = Limiter(
