@@ -7,15 +7,7 @@ import logging
 import os
 
 app = Flask(__name__)
-
-
-
-# Allow credentials and specify exact origins
-CORS(app, supports_credentials=True, resources={
-    r"/*": {
-        "origins": ["https://app.portfoliogpt.xyz", "https://www.portfoliogpt.xyz"]
-    }
-})
+CORS(app)  # Enable CORS
 
 # Rate Limiting
 limiter = Limiter(
@@ -37,6 +29,7 @@ def generate_prompt(investment_amount, risk_tolerance, investment_duration, inve
     return (f"Generate a diversified portfolio for an investment of {investment_amount} EUR with a {risk_tolerance} risk tolerance, "
             f"over a {investment_duration} duration and with a goal of {investment_goal}. "
             f"Include asset classes such as {asset_classes_text}. For each asset class, provide the asset class name, percentage allocation, amount to invest, and ticker symbols if applicable.")
+
 
 # Apply rate limiting to the portfolio generation endpoint
 @app.route('/generate_portfolio', methods=['POST'])
@@ -75,6 +68,7 @@ def generate_portfolio():
     except Exception as e:
         logging.error("Error: %s", e)
         return jsonify({'error': str(e)}), 500
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)), debug=True)
