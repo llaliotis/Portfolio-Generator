@@ -2,9 +2,12 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+from pymongo import MongoClient
 import openai
 import logging
 import os
+from datetime import datetime
+import certifi
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS
@@ -15,6 +18,12 @@ limiter = Limiter(
     app=app,
     default_limits=["5 per minute"]  # Example: 5 requests per minute
 )
+
+# MongoDB setup
+MONGODB_URI = os.getenv('MONGODB_URI', 'mongodb://localhost:27017/')
+client = MongoClient(MONGODB_URI, tlsCAFile=certifi.where())
+db = client['test']  # Connect to your database
+portfolio_collection = db['portfolios']  # Connect to your collection
 
 # Retrieve OpenAI API key from environment variable
 openai.api_key = os.getenv('OPENAI_API_KEY')
@@ -39,16 +48,14 @@ def generate_portfolio():
         user_data = request.json
         logging.info("Received user data: %s", user_data)
         
-        # Extract existing fields
+        # Extract fields from request
         investment_amount = user_data['amount']
         risk_tolerance = user_data['risk_tolerance']
-        
-        # Extract new fields with default values if they are missing
         investment_duration = user_data.get('investment_duration', 'long-term')
         investment_goal = user_data.get('investment_goal', 'growth')
         preferred_asset_classes = user_data.get('preferred_asset_classes', [])  # Defaults to an empty list if not provided
         
-        # Pass all required fields to generate_prompt
+        # Generate OpenAI prompt
         prompt = generate_prompt(investment_amount, risk_tolerance, investment_duration, investment_goal, preferred_asset_classes)
         
         # Call OpenAI API
@@ -60,10 +67,25 @@ def generate_portfolio():
             ]
         )
         
-        # Process the response and ensure it's a plain text
+        # Process the response
         portfolio = response.choices[0].message['content'].strip()
         logging.info("Generated portfolio: %s", portfolio)
         
+        # Prepare the data to be saved in MongoDB
+        portfolio_data = {
+            'amount': investment_amount,
+            'risk_tolerance': risk_tolerance,
+            'investment_duration': investment_duration,
+            'investment_goal': investment_goal,
+            'preferred_asset_classes': preferred_asset_classes,
+            'portfolio': portfolio,
+            'created_at': datetime.now()
+        }
+        
+        # Insert the portfolio into MongoDB
+        portfolio_collection.insert_one(portfolio_data)
+        
+        # Respond with the generated portfolio
         return jsonify({'portfolio': portfolio})
     except Exception as e:
         logging.error("Error: %s", e)
