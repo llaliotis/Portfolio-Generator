@@ -35,7 +35,7 @@ def index():
 
 def generate_prompt(investment_amount, risk_tolerance, investment_duration, investment_goal, preferred_asset_classes):
     asset_classes_text = ', '.join(preferred_asset_classes) if preferred_asset_classes else "stocks, bonds, real estate"
-    return (f"Generate a diversified portfolio for an investment of {investment_amount} EUR with a {risk_tolerance} risk tolerance, "
+    return (f"Generate a diversified portfolio for an investment of {investment_amount} USD with a {risk_tolerance} risk tolerance, "
             f"over a {investment_duration} duration and with a goal of {investment_goal}. "
             f"Include asset classes such as {asset_classes_text}. For each asset class, provide the asset class name, percentage allocation, amount to invest, and ticker symbols if applicable.")
 
